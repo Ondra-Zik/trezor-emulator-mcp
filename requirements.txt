@@ -1,0 +1,4 @@
+mcp
+websockets
+pillow
+vncdotool
