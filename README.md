@@ -1,4 +1,5 @@
 # trezor-emulator MCP
+WIP WIP WIP
 
 MCP server for controlling the Trezor T3W1 emulator running inside `trezor-user-env` Docker container.
 
