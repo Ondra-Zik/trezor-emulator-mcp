@@ -6,8 +6,6 @@ MCP server for controlling the Trezor T3W1 emulator running inside `trezor-user-
 
 VNC clicks, xdotool, and Playwright mouse events all fail on the T3W1 emulator because its firmware uses SDL touchscreen events (`SDL_FINGERDOWN`/`SDL_FINGERUP`) — not X11 mouse events. This server uses the WebSocket API exposed by `trezor-user-env` on port 9001, which bypasses X11/SDL entirely.
 
-See [../emulator-control-findings.md](../emulator-control-findings.md) for the full investigation.
-
 ## Requirements
 
 - `trezor-user-env` Docker container running with port 9001 exposed
