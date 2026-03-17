@@ -97,7 +97,9 @@ async def emulator_screenshot() -> Image:
         png_data = png_buffer.getvalue()
         return Image(data=png_data, format="png")
     except Exception as e:
-        raise RuntimeError(f"VNC screenshot failed: {str(e)}")
+        raise RuntimeError(
+            f"VNC screenshot failed (ensure emulator VNC is running on localhost:5900): {str(e)}"
+        )
 
 @mcp.tool()
 async def emulator_ping() -> str:

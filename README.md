@@ -11,6 +11,7 @@ See [../emulator-control-findings.md](../emulator-control-findings.md) for the f
 ## Requirements
 
 - `trezor-user-env` Docker container running with port 9001 exposed
+- VNC endpoint for the emulator available on `localhost:5900` (required by `emulator_screenshot`)
 - `python3` with `venv` and internet access for `pip install`
 
 ## Setup
@@ -59,16 +60,6 @@ The server is registered in `~/.claude/settings.json` as `trezor-emulator` and s
 | `emulator_stop` | — | Stop the emulator |
 | `emulator_ping` | — | Check WebSocket connectivity |
 
-### Coordinate system
-
-Display is **412×552 px**: `(0,0)` = top-left, `(411,551)` = bottom-right.
-
-Common positions on the THP pairing screen:
-
-| Button | x | y |
-|---|---|---|
-| Confirm (green ✓) | 255 | 491 |
-| Dismiss (X) | 88 | 491 |
 
 ## Files
 
