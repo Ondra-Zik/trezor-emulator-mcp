@@ -9,7 +9,7 @@ Connects to the `trezor-user-env` WebSocket API on port 9001 to send commands (s
 ## Requirements
 
 - `trezor-user-env` Docker container running with port 9001 exposed
-- VNC on `localhost:5900` (for `emulator_screenshot`)
+- VNC on `localhost:5900` (for `emulator_screenshot`) — requires the [`feature/x11-to-vnc-migration`](https://github.com/trezor/trezor-user-env/tree/feature/x11-to-vnc-migration) branch of `trezor-user-env`
 - `python3` with `venv`
 
 ## Setup
