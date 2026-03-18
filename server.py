@@ -273,14 +273,19 @@ async def emulator_stop() -> str:
     return f"Stop result: {result}"
 
 
+SCREENSHOT_DIR_NAME = ".trezor-emulator-mcp-screenshots"
+
+
 @mcp.tool()
 async def emulator_screenshot() -> Image:
     """
     Take a screenshot of the Trezor emulator display and return it as a PNG image.
 
     Captures directly from the VNC server on port 5900.
+    Screenshots are also saved to .screenshots/ for later use in reports.
     """
     import io
+    from datetime import datetime
     from vncdotool import api as vncapi
 
     try:
@@ -290,6 +295,14 @@ async def emulator_screenshot() -> Image:
         client.captureScreen(png_buffer)
         client.disconnect()
         png_data = png_buffer.getvalue()
+
+        screenshot_dir = os.path.join(os.getcwd(), SCREENSHOT_DIR_NAME)
+        os.makedirs(screenshot_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        filepath = os.path.join(screenshot_dir, f"{timestamp}.png")
+        with open(filepath, "wb") as f:
+            f.write(png_data)
+
         return Image(data=png_data, format="png")
     except Exception as e:
         raise RuntimeError(
