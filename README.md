@@ -1,32 +1,22 @@
 # trezor-emulator MCP
-# WIP WIP WIP
 
-MCP server for controlling the Trezor T3W1 emulator running inside `trezor-user-env` Docker container.
+MCP server for controlling Trezor emulators running inside `trezor-user-env` Docker container.
 
-## Why this exists
+## How it works
 
-VNC clicks, xdotool, and Playwright mouse events all fail on the T3W1 emulator because its firmware uses SDL touchscreen events (`SDL_FINGERDOWN`/`SDL_FINGERUP`) — not X11 mouse events. This server uses the WebSocket API exposed by `trezor-user-env` on port 9001, which bypasses X11/SDL entirely.
+Connects to the `trezor-user-env` WebSocket API on port 9001 to send commands (start/stop, click, input, setup, etc.) and captures screenshots via VNC on port 5900.
 
 ## Requirements
 
 - `trezor-user-env` Docker container running with port 9001 exposed
-- VNC endpoint for the emulator available on `localhost:5900` (required by `emulator_screenshot`)
-- `python3` with `venv` and internet access for `pip install`
+- VNC on `localhost:5900` (for `emulator_screenshot`)
+- `python3` with `venv`
 
 ## Setup
 
-Use `./run.sh` to start the server. It will:
+Run `./run.sh` — it creates `.venv` (or uses `$TREZOR_EMULATOR_VENV`), installs dependencies, and starts the server.
 
-1. Create/use `.venv` (or `$TREZOR_EMULATOR_VENV` if set).
-2. Install missing Python packages with `pip`.
-3. Run `server.py` from that virtual environment.
-
-## Use directly from GitHub
-
-1. Clone this repository.
-2. Set your MCP config to execute `run.sh` from the cloned folder.
-
-Example VS Code user MCP config entry:
+### MCP config example (VS Code)
 
 ```json
 {
@@ -43,28 +33,26 @@ Example VS Code user MCP config entry:
 }
 ```
 
-For first start, internet access is needed so `pip` can install dependencies into `.venv`.
-
-The server is registered in `~/.claude/settings.json` as `trezor-emulator` and starts automatically when Claude Code loads. Restart Claude Code or open `/hooks` after first install.
-
 ## Tools
 
 | Tool | Arguments | Description |
 |---|---|---|
-| `emulator_screenshot` | — | Capture emulator display as PNG image |
-| `emulator_click` | `x: int, y: int` | Touch at display coordinates |
+| `emulator_start` | `model`, `version?`, `wipe?` | Start emulator with given model/firmware |
+| `emulator_start_from_url` | `url`, `model`, `wipe?` | Start emulator from a firmware URL |
+| `emulator_start_from_branch` | `branch`, `model`, `btc_only?`, `wipe?` | Start emulator from a git branch build |
+| `emulator_stop` | — | Stop the emulator |
+| `emulator_setup` | `mnemonic`, `pin`, `passphrase_protection`, `label`, `needs_backup?` | Set up device with seed and settings |
+| `emulator_wipe` | — | Wipe all device data |
+| `emulator_apply_settings` | `label?`, `passphrase_always_on_device?`, `auto_lock_delay_ms?` | Apply device settings |
+| `emulator_get_features` | — | Get device features/capabilities |
+| `emulator_get_debug_state` | — | Get debug state (layout, PIN, mnemonic) |
+| `emulator_screenshot` | — | Capture display as PNG via VNC |
+| `emulator_click` | `x`, `y` | Touch at display coordinates (412×552) |
+| `emulator_swipe` | `direction` | Swipe up/down/left/right |
 | `emulator_press_yes` | — | Press physical YES button |
 | `emulator_press_no` | — | Press physical NO button |
-| `emulator_input` | `value: str` | Type text (PIN, passphrase) |
-| `emulator_stop` | — | Stop the emulator |
+| `emulator_input` | `value` | Type text (PIN, passphrase) |
 | `emulator_ping` | — | Check WebSocket connectivity |
-
-
-## Files
-
-```
-trezor-emulator-mcp/
-├── requirements.txt  # Python dependencies
-├── server.py   # FastMCP server
-└── run.sh      # Launcher (.venv bootstrap)
-```
+| `bridge_start` | `version?` | Start the Trezor bridge |
+| `bridge_stop` | — | Stop the Trezor bridge |
+| `background_check` | — | Check status of all running services |
