@@ -6,7 +6,7 @@ MCP server for controlling Trezor emulators running inside `trezor-user-env` Doc
 
 Connects to the `trezor-user-env` WebSocket API on port 9001 to send commands (start/stop, click, input, setup, etc.) and captures screenshots via VNC on port 5900.
 
-The emulator start commands send `use_vnc: true`, which tells `trezor-user-env` to render the emulator GUI inside the Docker container using a virtual display and VNC server instead of forwarding X11 to the host:
+The emulator GUI is rendered inside the Docker container using a virtual display and VNC server:
 
 ```
 Emulator binary → renders GUI via SDL2 → Xvfb (virtual framebuffer)

@@ -64,7 +64,7 @@ async def emulator_start(model: str, version: str = "", wipe: bool = False) -> s
         version: Firmware version (e.g. "2.7.1"). Empty string or omit for latest development build. Use "-latest" suffix for latest release.
         wipe: Whether to wipe device storage on start.
     """
-    payload: dict = {"type": "emulator-start", "model": model, "wipe": wipe, "use_vnc": True}
+    payload: dict = {"type": "emulator-start", "model": model, "wipe": wipe}
     if version:
         payload["version"] = version
     result = await _send_command(payload)
@@ -83,7 +83,7 @@ async def emulator_start_from_url(url: str, model: str, wipe: bool = False) -> s
         model: Trezor model. One of: "T1B1", "T2T1", "T3B1", "T3T1", "T3W1".
         wipe: Whether to wipe device storage on start.
     """
-    result = await _send_command({"type": "emulator-start-from-url", "url": url, "model": model, "wipe": wipe, "use_vnc": True})
+    result = await _send_command({"type": "emulator-start-from-url", "url": url, "model": model, "wipe": wipe})
     if result.get("success"):
         return f"Emulator started from URL: {result.get('response', 'ok')}"
     return f"Emulator start from URL failed: {result}"
@@ -106,7 +106,6 @@ async def emulator_start_from_branch(branch: str, model: str, btc_only: bool = F
         "model": model,
         "btc_only": btc_only,
         "wipe": wipe,
-        "use_vnc": True,
     })
     if result.get("success"):
         return f"Emulator started from branch: {result.get('response', 'ok')}"
