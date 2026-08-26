@@ -1,4 +1,6 @@
-# trezor-emulator MCP
+#  Archived as the work has been upstreamed to https://github.com/trezor/trezor-user-env
+
+## trezor-emulator MCP
 
 MCP server for controlling Trezor emulators running inside `trezor-user-env` Docker container.
 
